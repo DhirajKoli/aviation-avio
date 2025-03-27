@@ -1,16 +1,15 @@
 package com.example.aviation_avio.service;
 
-import com.example.aviation_avio.api.response.*;
+import com.example.aviation_avio.api.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -130,5 +129,23 @@ public class AirportServiceImp implements AirportService{
 
         return restTemplate.exchange(uri, HttpMethod.GET,this.getHeader(), String.class,aid).getBody();
     }
+
+    @Override
+    public String apiWorkingChecker() throws HttpClientErrorException {
+
+        String uri = environment.getProperty("api.uri");
+
+        uri = uri + "/APT-FO61-WBTO/runways?page=1&size=2";
+
+        ResponseEntity<String> stringResponseEntity;
+
+        try{
+            stringResponseEntity = restTemplate.exchange(uri, HttpMethod.GET,this.getHeader(),String.class);
+        }catch(HttpClientErrorException e){
+            throw new HttpClientErrorException(e.getStatusCode());
+        }
+        return stringResponseEntity.getBody();
+    }
+
 
 }

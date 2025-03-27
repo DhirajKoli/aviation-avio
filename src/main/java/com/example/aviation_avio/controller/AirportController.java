@@ -1,6 +1,6 @@
 package com.example.aviation_avio.controller;
 
-import com.example.aviation_avio.api.response.*;
+import com.example.aviation_avio.api.model.*;
 import com.example.aviation_avio.service.AirportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;

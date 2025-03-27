@@ -1,4 +1,4 @@
-package com.example.aviation_avio.api.response;
+package com.example.aviation_avio.api.model;
 
 import lombok.Builder;
 import lombok.Getter;

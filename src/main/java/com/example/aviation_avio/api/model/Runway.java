@@ -1,6 +1,5 @@
-package com.example.aviation_avio.api.response;
+package com.example.aviation_avio.api.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

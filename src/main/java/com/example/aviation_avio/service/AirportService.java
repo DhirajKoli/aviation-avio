@@ -1,6 +1,6 @@
 package com.example.aviation_avio.service;
 
-import com.example.aviation_avio.api.response.*;
+import com.example.aviation_avio.api.model.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,4 +23,5 @@ public interface AirportService {
 
     public String getAirportAvailabilityByID(String aid);
 
+    public String apiWorkingChecker() throws Exception;
 }

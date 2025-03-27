@@ -1,21 +1,18 @@
 package com.example.aviation_avio.api.service;
 
-import com.example.aviation_avio.api.response.*;
+import com.example.aviation_avio.api.model.*;
 import com.example.aviation_avio.service.AirportServiceImp;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -29,21 +26,18 @@ public class AirportServiceTest {
     @Mock
     private Environment environment;
 
+    RestTemplate restTemplate = new RestTemplate();
+
     @InjectMocks
     private AirportServiceImp airportServiceImp;
 
     @BeforeEach
     public void doBefore(){
         String uri = "https://api.aviowiki.com/airports";
-        String token = "589097e2-6804-4b3b-bd1a-eadd1bebaeb9";
+        String token = "42002142-c0aa-4a22-aa71-0607bfbc9337";
 
         Mockito.when(environment.getProperty("api.uri")).thenReturn(uri);
         Mockito.when(environment.getProperty("api.token")).thenReturn(token);
-    }
-
-    @Test
-    public void apiUrlnotRespondingWithStatus200(){
-
     }
 
     @Test
@@ -493,6 +487,22 @@ public class AirportServiceTest {
             Provider expectedProvider  = (Provider) expectedPageResponse.getContent().get(i);
             Assertions.assertThat(provider.getAid()).isNotEqualTo(expectedProvider.getAid());
         }
+
+    }
+
+    @Test
+    public void apiUrlNotRespondingWithStatus200(){
+
+        Mockito.when(environment.getProperty("api.token")).thenReturn("589097e2-6804-4b3b-bd1a-eadd1bebaeb9");
+
+        HttpClientErrorException exception = new HttpClientErrorException(HttpStatusCode.valueOf(200));
+        try{
+            String responseString = airportServiceImp.apiWorkingChecker();
+        }catch(HttpClientErrorException e){
+            exception = e;
+        }
+
+        Assertions.assertThat(exception.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(403));
 
     }
 }
